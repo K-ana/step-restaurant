@@ -1,0 +1,204 @@
+<div class="mainDiv  container-fluid"  >
+    <!-- <img class="backgrImg " src="../../assets/images/backgroundProducts.avif"> -->
+    
+        <div class="loaderdiv"  *ngIf="showloader"  >
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+           </div> 
+        
+     
+    
+    
+    <div class="navigation" id="navigationLg" >
+     
+        <div class="buttons " >
+            <button type="button" (click)="getAllPr()"  class="all btn btn-dark " >All</button>
+         <div class="categoriesDiv" *ngFor="let category of categories" >
+            <button type="button"  class="all btn btn-dark "  (click)="getProductsById(category.id)">{{category.name}}</button> 
+                
+     </div></div></div>       
+    
+    
+    
+    
+        
+     <form class="filters container-fluid"  (ngSubmit)="onSubmit(filterForm.vegeterian,filterForm.nuts,filterForm.spiciness)">
+      <input (click)="getAllPr()" type="reset" class="btn btn-danger" style="width: 150px !important; height: 40px !important;" id="res" value="Reset" >
+            <div class="range-container d-flex inputsDivs" >
+                <label for="range">Spiciness:</label>
+                <input type="range"  name="range" id="range" min="-1" max="4"   step="1" name="spiciness" [(ngModel)]="filterForm.spiciness">
+            </div>
+        
+            <div class="filters__group">
+                <div class="filters__checkbox d-flex inputsDiv"  >
+                    <label for="nuts-checkbox" >
+                        <span class="filters__label">  No Nuts</span>
+                    </label>                
+                    <input class="styled-checkbox"  id="nuts-checkbox" type="checkbox" name="nuts" [(ngModel)]="filterForm.nuts">
+    
+                </div>
+            </div>
+        
+            <div class="filters__group">
+                <div class="filters__checkbox d-flex inputsDiv" >
+                    <label for="vegeterian-checkbox">
+                        <span class="filters__label">  Vegeterian only</span>
+                    </label>                
+                    <input class="styled-checkbox" id="vegeterian-checkbox" type="checkbox" name="vegeterian"  [(ngModel)]="filterForm.vegeterian" >
+    
+                </div>
+            </div>
+      <input  id="searchBtn"  type="submit"  style="width: 150px !important; height: 40px !important;" class="applyFilters btn btn-success"  value="Search">
+    
+    
+     </form>
+        
+       
+    
+    
+    
+        <div class="productsDiv  "  *ngIf="productShow">
+                
+            <div   class=" card" *ngFor="let product of products">
+                <div class="P_itmesbox card-body"   >
+                    <div class="PT_image ">
+                    <img src="{{product.image}}" class="absoImg card-img-top img" alt=""></div>
+                    <div class="PT_dscr text-center ">
+                        <h3 style="font-size: 20px !important;" class="PT_title ng-binding card-title">{{product.name}}</h3>
+                        <p class="PT_dtls ng-binding card-text mt-4" >
+                            Spiciness: {{product.spiciness}}
+                        </p>
+                        <div class="PT_optn">
+                            <ul class="PT-radio d-flex justify-content-between">
+                                <li>
+                                   <div *ngIf="product.nuts==true">
+                                     <input type="radio" id="radio-1" style="accent-color: green;"  class="nutsCheck" checked="true" ></div>
+                                     <div *ngIf="product.nuts==false">
+                                        <input type="radio" id="radio-1"   ></div>                        
+                                    <label for="radio-1">Nuts</label>
+                                </li>
+    
+    
+                                <li>
+                                    <div *ngIf="product.vegeterian==true">
+                                        <input type="radio" id="radio-1" style="accent-color: green;"  checked="true" ></div>
+                                        <div *ngIf="product.vegeterian==false">
+                                           <input type="radio" id="radio-1"   ></div> 
+                                    <label for="radio-2">Vegeterian</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="price_block d-flex justify-content-evenly mt-4 prices">
+                           
+                            <h3 class="price ng-binding price">$ {{product.price}}</h3>
+                            <input id="addToCartButton"  type="button" (click)="submitAddtoCart(product)" class="card_btn btn btn-success" value="Add to cart">
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+        </div> 
+    
+    
+        <div class="productsDiv filteredByCategory  " *ngIf="productByIdShow" >
+                
+            <div   class="col-lg-4 col-md-6 col-sm-6 col-xs-12 card" *ngFor="let product of productsByCatId">
+                <div class="P_itmesbox card-body">
+                    <div class="PT_image ">
+                    <img src="{{product.image}}" class="absoImg card-img-top" alt=""></div>
+                    <div class="PT_dscr text-center ">
+                        <h3 class="PT_title ng-binding card-title">{{product.name}}</h3>
+                        <p class="PT_dtls ng-binding card-text mt-4" >
+                            Spiciness: {{product.spiciness}}
+                        </p>
+                        <div class="PT_optn">
+                            <ul class="PT-radio d-flex justify-content-between">
+                                <li>
+                                   <div *ngIf="product.nuts==true">
+                                     <input type="radio" id="radio-1" style="accent-color: green;"  checked="true" ></div>
+                                     <div *ngIf="product.nuts==false">
+                                        <input type="radio" id="radio-1"   ></div>                        
+                                    <label for="radio-1">Nuts</label>
+                                </li>
+    
+    
+                                <li>
+                                    <div *ngIf="product.vegeterian==true">
+                                        <input type="radio" id="radio-1" style="accent-color: green;"   checked="true" ></div>
+                                        <div *ngIf="product.vegeterian==false">
+                                           <input type="radio" id="radio-1"   ></div> 
+                                    <label for="radio-2">Vegeterian</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="price_block d-flex justify-content-evenly mt-4">
+                            <!-- <input [(ngModel)]="addP.quantity"  type="hidden" name="quantity"> -->
+                           
+                            <h3 class="price ng-binding price">$ {{product.price}}</h3>
+                            <input  type="button" (click)="submitAddtoCart(product)" class="card_btn btn btn-success" value="Add to cart">
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+        </div> 
+    
+    
+        <div class="productsDiv filteredByCategory  " *ngIf="productByFilterShow" >
+                
+            <div  class="col-lg-4 col-md-6 col-sm-6 col-xs-12 card" *ngFor="let product of productBFA ">
+                <div class="P_itmesbox card-body">
+                    <div class="PT_image ">
+                    <img src="{{product.image}}" class="absoImg card-img-top" alt=""></div>
+                    <div class="PT_dscr text-center ">
+                        <h3 class="PT_title ng-binding card-title">{{product.name}}</h3>
+                        <p class="PT_dtls ng-binding card-text mt-4" >
+                            Spiciness: {{product.spiciness}}
+                        </p>
+                        <div class="PT_optn">
+                            <ul class="PT-radio d-flex justify-content-between">
+                                <li>
+                                   <div *ngIf="product.nuts==true">
+                                     <input type="radio" id="radio-1" style="accent-color: green;"   checked="true" ></div>
+                                     <div *ngIf="product.nuts==false">
+                                        <input type="radio" id="radio-1"   ></div>                        
+                                    <label for="radio-1">Nuts</label>
+                                </li>
+    
+    
+                                <li>
+                                    <div *ngIf="product.vegeterian==true">
+                                        <input type="radio" id="radio-1" style="accent-color: green;"  checked="true" ></div>
+                                        <div *ngIf="product.vegeterian==false">
+                                           <input type="radio" id="radio-1"   ></div> 
+                                    <label for="radio-2">Vegeterian</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="price_block d-flex justify-content-evenly mt-4">
+                            <!-- <input [(ngModel)]="addP.quantity"  type="hidden" name="quantity"> -->
+                           
+                            <h3  class="price ng-binding price">$ {{product.price}}</h3>
+                            
+                                 <input  type="button" (click)="submitAddtoCart(product)" class="card_btn btn btn-success" value="Add to cart">
+                            
+                           
+                           
+                            
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+        </div> 
+    
+    
+    
+    
+    </div>
+    
+        
+    
+    
